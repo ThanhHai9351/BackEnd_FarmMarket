@@ -37,7 +37,7 @@ const createUserService = (newUser) => {
 
 const loginUserService = (userLogin) => {
   return new Promise(async (resolve, reject) => {
-    const { name, email, phone, password, confirmPassword } = userLogin;
+    const { email, password } = userLogin;
     try {
       const checkUser = await User.findOne({ email: email });
       if (checkUser === null) {
@@ -62,9 +62,10 @@ const loginUserService = (userLogin) => {
         id: checkUser.id,
         role: checkUser.role,
       });
+
       resolve({
         status: "OK",
-        message: "Success create user",
+        message: "Success login user",
         access_token,
         refresh_token,
       });
@@ -78,7 +79,6 @@ const updateUserService = (id, data) => {
   return new Promise(async (resolve, reject) => {
     try {
       const checkUser = await User.findOne({ _id: id });
-      console.log(checkUser);
 
       const updateUser = await User.findByIdAndUpdate(id, data, { new: true });
 
@@ -93,4 +93,57 @@ const updateUserService = (id, data) => {
   });
 };
 
-module.exports = { createUserService, loginUserService, updateUserService };
+const deleteUserService = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkUser = await User.findOne({ _id: id });
+      await User.findByIdAndDelete(id);
+
+      resolve({
+        status: "OK",
+        message: "DELETE USER SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getAllUserService = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allUser = await User.find();
+      resolve({
+        status: "OK",
+        message: "GET ALL USER COMPLETE!",
+        data: allUser,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getDetailUser = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findOne({ _id: id });
+      resolve({
+        status: "OK",
+        message: "GET USER COMPLETE!",
+        data: user,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+module.exports = {
+  createUserService,
+  loginUserService,
+  updateUserService,
+  deleteUserService,
+  getAllUserService,
+  getDetailUser,
+};

@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema(
         quantity: { type: Number, required: true },
         image: { type: String, required: true },
         price: { type: Number, required: true },
-        product: {
+        productid: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
           ref: "Product",
@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema(
     itemsPrice: { type: Number, required: true },
     taxPrice: { type: Number, required: true },
     totalPrice: { type: Number, required: true },
-    user: {
+    userid: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User",
