@@ -32,7 +32,8 @@ const createShoppingCart = async (req, res) => {
 
 const getAllShoppingCarts = async (req, res) => {
   try {
-    const respon = await ShoppingCartService.getAllShoppingCartsService();
+    const { userid } = req.query;
+    const respon = await ShoppingCartService.getAllShoppingCartsService(userid);
     return res.status(200).json(respon);
   } catch (e) {
     return res.status(404).json({ message: e.message });

@@ -20,21 +20,40 @@ const createShoppingCartService = (data) => {
           message: "Product not found",
         });
       }
-      const createShoppingCart = await ShoppingCart.create({
-        name,
-        price,
-        quantity,
-        total,
-        productid,
-        userid,
+      const checkShoppingCart = await ShoppingCart.findOne({
+        productid: productid,
+        userid: userid,
       });
 
-      if (createShoppingCart) {
-        resolve({
-          status: "OK",
-          message: "Success create shopping cart",
-          data: createShoppingCart,
+      if (checkShoppingCart) {
+        const updateSP = updateShoppingCartService(checkShoppingCart._id, {
+          quantity: checkShoppingCart.quantity + 1,
+          total: checkShoppingCart.price * (checkShoppingCart.quantity + 1),
         });
+        if (updateSP) {
+          resolve({
+            status: "OK",
+            message: "Success update shopping cart",
+            data: updateSP,
+          });
+        }
+      } else {
+        const createShoppingCart = await ShoppingCart.create({
+          name,
+          price,
+          quantity,
+          total,
+          productid,
+          userid,
+        });
+
+        if (createShoppingCart) {
+          resolve({
+            status: "OK",
+            message: "Success create shopping cart",
+            data: createShoppingCart,
+          });
+        }
       }
     } catch (e) {
       reject(e);
@@ -42,10 +61,14 @@ const createShoppingCartService = (data) => {
   });
 };
 
-const getAllShoppingCartsService = () => {
+const getAllShoppingCartsService = (userid) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const allShoppingCart = await ShoppingCart.find();
+      let query = {};
+      if (userid) {
+        query.userid = userid;
+      }
+      const allShoppingCart = await ShoppingCart.find(query);
       resolve({
         status: "OK",
         message: "GET ALL SHOPPING CART COMPLETE!",
