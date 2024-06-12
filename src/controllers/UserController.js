@@ -102,6 +102,21 @@ const getDetailUser = async (req, res) => {
   }
 };
 
+const getCurrentUser = async (req, res) => {
+  try {
+    const token = req.params.token;
+    if (!token) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "Don't find access_token" });
+    }
+    const respon = await UserService.getCurrentUserService(token);
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
@@ -109,4 +124,5 @@ module.exports = {
   deleteUser,
   getAllUsers,
   getDetailUser,
+  getCurrentUser,
 };

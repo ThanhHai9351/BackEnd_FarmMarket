@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const NSX = require("../models/NSX");
+const Category = require("../models/Category");
 
 const createProductService = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -7,7 +8,7 @@ const createProductService = (data) => {
       name,
       price,
       description,
-      type,
+      categoryid,
       image,
       quantity,
       nearType,
@@ -22,11 +23,18 @@ const createProductService = (data) => {
           message: "NSX not found",
         });
       }
+      const checkCate = await Category.findOne({ _id: categoryid });
+      if (!checkCate) {
+        resolve({
+          status: "ERROR",
+          message: "Category not found",
+        });
+      }
       const createProduct = await Product.create({
         name,
         price,
         description,
-        type,
+        categoryid,
         image,
         quantity,
         nearType,
@@ -47,18 +55,25 @@ const createProductService = (data) => {
   });
 };
 
-const getAllProductsService = (limit, page, sort, filter) => {
+const getAllProductsService = (limit, page, sort, filter, categoryid) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const totalProduct = await Product.countDocuments();
-      const allProduct = await Product.find({
-        name: { $regex: filter || "", $options: "i" },
-      })
+      let query = {};
+      if (filter) {
+        query.name = { $regex: filter, $options: "i" };
+      }
+      if (categoryid) {
+        query.categoryid = categoryid;
+      }
+
+      const totalProduct = await Product.countDocuments(query);
+      const allProduct = await Product.find(query)
         .limit(limit)
         .skip(limit * page)
         .sort({
           price: sort,
         });
+
       resolve({
         status: "OK",
         message: "GET ALL PRODUCT COMPLETE!",

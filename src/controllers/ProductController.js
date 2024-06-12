@@ -7,7 +7,7 @@ const createProduct = async (req, res) => {
       name: Joi.string().required(),
       price: Joi.number().required(),
       description: Joi.string().required(),
-      type: Joi.string().required(),
+      categoryid: Joi.string().required(),
       image: Joi.string().required(),
       quantity: Joi.number().integer().required(),
       nearType: Joi.string().required(),
@@ -32,12 +32,13 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   try {
-    const { limit, page, sort, filter } = req.query;
+    const { limit, page, sort, filter, categoryid } = req.query;
     const respon = await ProductService.getAllProductsService(
       Number(limit) || 8,
       Number(page) || 0,
       sort || "asc",
-      filter || ""
+      filter || "",
+      categoryid
     );
     return res.status(200).json(respon);
   } catch (e) {

@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { genneralAccessToken, genneralRefreshToken } = require("./JwtService");
 
 const createUserService = (newUser) => {
@@ -139,6 +140,22 @@ const getDetailUser = (id) => {
   });
 };
 
+const getCurrentUserService = (token) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+      const loggedUser = await User.findOne({ _id: decoded.payload.id });
+      resolve({
+        status: "OK",
+        message: "GET USER COMPLETE!",
+        data: loggedUser,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createUserService,
   loginUserService,
@@ -146,4 +163,5 @@ module.exports = {
   deleteUserService,
   getAllUserService,
   getDetailUser,
+  getCurrentUserService,
 };
