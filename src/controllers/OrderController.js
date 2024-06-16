@@ -9,19 +9,17 @@ const createOrder = async (req, res) => {
           Joi.object({
             name: Joi.string().required(),
             quantity: Joi.number().integer().required(),
-            image: Joi.string().required(),
             price: Joi.number().required(),
             productid: Joi.string().required(),
           })
         )
         .required(),
       shippingAddress: Joi.object({
-        fullName: Joi.string().required(),
-        address: Joi.string().required(),
-        country: Joi.string().required(),
+        city: Joi.string().required(),
+        district: Joi.string().required(),
+        street: Joi.string().required(),
       }).required(),
       paymentMethod: Joi.string().required(),
-      itemsPrice: Joi.number().required(),
       taxPrice: Joi.number().required(),
       totalPrice: Joi.number().required(),
       userid: Joi.string().required(),
@@ -62,4 +60,28 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-module.exports = { createOrder, deleteOrder };
+const getAllOrder = async (req, res) => {
+  try {
+    const respon = await OrderService.getAllOrderSevice();
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
+
+const getAllOrderFromUser = async (req, res) => {
+  try {
+    const userID = req.params.id;
+    if (!userID) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "The user is required" });
+    }
+    const respon = await OrderService.getAllOrderFromUserService(userID);
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
+
+module.exports = { createOrder, deleteOrder, getAllOrder, getAllOrderFromUser };

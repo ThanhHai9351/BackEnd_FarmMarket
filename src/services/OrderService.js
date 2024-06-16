@@ -8,7 +8,6 @@ const createOrderService = (data) => {
       orderItems,
       shippingAddress,
       paymentMethod,
-      itemsPrice,
       taxPrice,
       totalPrice,
       userid,
@@ -41,7 +40,6 @@ const createOrderService = (data) => {
         orderItems,
         shippingAddress,
         paymentMethod,
-        itemsPrice,
         taxPrice,
         totalPrice,
         userid,
@@ -80,4 +78,47 @@ const deleteOrderService = (id) => {
   });
 };
 
-module.exports = { createOrderService, deleteOrderService };
+const getAllOrderSevice = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allOrder = await Order.find();
+      resolve({
+        status: "OK",
+        message: "GET ALL ORDER COMPLETE!",
+        data: allOrder,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getAllOrderFromUserService = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findById(id);
+      if (!user) {
+        return resolve({
+          status: "ERROR",
+          message: "User not found",
+        });
+      } else {
+        const allOrder = await Order.find({ userid: id });
+        resolve({
+          status: "OK",
+          message: "GET ALL ORDER COMPLETE!",
+          data: allOrder,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+module.exports = {
+  createOrderService,
+  deleteOrderService,
+  getAllOrderSevice,
+  getAllOrderFromUserService,
+};

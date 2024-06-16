@@ -22,6 +22,8 @@ app.post("/", (req, res) => {
   return res.send("hello");
 });
 app.use(cors());
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 routes(app);
 
