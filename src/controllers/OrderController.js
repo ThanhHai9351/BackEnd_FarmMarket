@@ -84,4 +84,25 @@ const getAllOrderFromUser = async (req, res) => {
   }
 };
 
-module.exports = { createOrder, deleteOrder, getAllOrder, getAllOrderFromUser };
+const getdetailOrder = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    if (!orderId) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "The user is required" });
+    }
+    const respon = await OrderService.getDetailOrderService(orderId);
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
+
+module.exports = {
+  createOrder,
+  deleteOrder,
+  getAllOrder,
+  getAllOrderFromUser,
+  getdetailOrder,
+};

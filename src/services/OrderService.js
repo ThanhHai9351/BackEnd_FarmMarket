@@ -116,9 +116,25 @@ const getAllOrderFromUserService = (id) => {
   });
 };
 
+const getDetailOrderService = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const order = await Order.findById({ _id: id });
+      resolve({
+        status: "OK",
+        message: "GET ORDER COMPLETE!",
+        data: order,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createOrderService,
   deleteOrderService,
   getAllOrderSevice,
   getAllOrderFromUserService,
+  getDetailOrderService,
 };
