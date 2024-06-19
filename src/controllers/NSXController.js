@@ -81,4 +81,26 @@ const getDetailNSX = async (req, res) => {
   }
 };
 
-module.exports = { createNSX, updateNSX, deleteNSX, getAllNSX, getDetailNSX };
+const getDetailNSXFromUser = async (req, res) => {
+  try {
+    const userid = req.params.id;
+    if (!userid) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "The user is required" });
+    }
+    const respon = await NSXService.getDetailNSXFromUserService(userid);
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
+
+module.exports = {
+  createNSX,
+  updateNSX,
+  deleteNSX,
+  getAllNSX,
+  getDetailNSX,
+  getDetailNSXFromUser,
+};

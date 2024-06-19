@@ -100,10 +100,26 @@ const getDetailNSX = (id) => {
   });
 };
 
+const getDetailNSXFromUserService = (userid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const nsx = await NSX.findOne({ userid: userid });
+      resolve({
+        status: "OK",
+        message: "GET NSX COMPLETE!",
+        data: nsx,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createNSXService,
   updateNSXService,
   deleteNSXService,
   getAllNSXService,
   getDetailNSX,
+  getDetailNSXFromUserService,
 };
