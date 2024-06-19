@@ -120,9 +120,32 @@ const updateShoppingCartService = (id, data) => {
   });
 };
 
+const deleteShoppingCartFromUserService = (userid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkShoppingCart = await ShoppingCart.findOne({ userid: userid });
+      if (!checkShoppingCart) {
+        resolve({
+          status: "ERROR",
+          message: "Shopping Cart not found",
+        });
+      }
+      await ShoppingCart.deleteMany({ userid: userid });
+
+      resolve({
+        status: "OK",
+        message: "DELETE SHOPPING CART SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createShoppingCartService,
   getAllShoppingCartsService,
   deleteShoppingCartService,
   updateShoppingCartService,
+  deleteShoppingCartFromUserService,
 };

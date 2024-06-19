@@ -76,9 +76,27 @@ const updateShoppingCart = async (req, res) => {
   }
 };
 
+const deleteShoppingCartFromUser = async (req, res) => {
+  try {
+    const userid = req.params.id;
+    if (!userid) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "The shopping cart is required" });
+    }
+    const respon = await ShoppingCartService.deleteShoppingCartFromUserService(
+      userid
+    );
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ status: "ERROR", message: e.message });
+  }
+};
+
 module.exports = {
   createShoppingCart,
   getAllShoppingCarts,
   deleteShoppingCart,
   updateShoppingCart,
+  deleteShoppingCartFromUser,
 };
