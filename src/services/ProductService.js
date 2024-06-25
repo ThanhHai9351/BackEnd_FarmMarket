@@ -55,7 +55,14 @@ const createProductService = (data) => {
   });
 };
 
-const getAllProductsService = (limit, page, sort, filter, categoryid) => {
+const getAllProductsService = (
+  limit,
+  page,
+  sort,
+  filter,
+  categoryid,
+  nsxid
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       let query = {};
@@ -64,6 +71,9 @@ const getAllProductsService = (limit, page, sort, filter, categoryid) => {
       }
       if (categoryid) {
         query.categoryid = categoryid;
+      }
+      if (nsxid) {
+        query.nsxid = nsxid;
       }
 
       const totalProduct = await Product.countDocuments(query);

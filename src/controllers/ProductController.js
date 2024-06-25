@@ -32,13 +32,14 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   try {
-    const { limit, page, sort, filter, categoryid } = req.query;
+    const { limit, page, sort, filter, categoryid, nsxid } = req.query;
     const respon = await ProductService.getAllProductsService(
       Number(limit) || 10,
       Number(page) || 0,
       sort || "asc",
       filter || "",
-      categoryid
+      categoryid,
+      nsxid
     );
     return res.status(200).json(respon);
   } catch (e) {

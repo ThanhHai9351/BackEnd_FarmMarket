@@ -79,8 +79,6 @@ const loginUserService = (userLogin) => {
 const updateUserService = (id, data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const checkUser = await User.findOne({ _id: id });
-
       const updateUser = await User.findByIdAndUpdate(id, data, { new: true });
 
       resolve({
