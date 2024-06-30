@@ -24,7 +24,12 @@ const createCategory = async (req, res) => {
 
 const getAllCategory = async (req, res) => {
   try {
-    const respon = await CategoryServive.getAllCategoryService();
+    const { limit, page, filter } = req.query;
+    const respon = await CategoryServive.getAllCategoryService(
+      Number(limit) || 10,
+      Number(page) || 0,
+      filter || ""
+    );
     return res.status(200).json(respon);
   } catch (e) {
     return res.status(404).json({ message: e.message });

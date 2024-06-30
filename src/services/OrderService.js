@@ -78,14 +78,21 @@ const deleteOrderService = (id) => {
   });
 };
 
-const getAllOrderSevice = () => {
+const getAllOrderSevice = (limit, page, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const allOrder = await Order.find();
+      const totalOrder = await Order.countDocuments({ _id: filter });
+      const allOrder = await Order.find({ _id: filter })
+        .limit(limit)
+        .skip(limit * page);
+
       resolve({
         status: "OK",
-        message: "GET ALL ORDER COMPLETE!",
+        message: "GET ALL Order COMPLETE!",
         data: allOrder,
+        total: totalOrder,
+        pageCurrent: page + 1,
+        totalPage: Math.ceil(totalOrder / limit),
       });
     } catch (e) {
       reject(e);

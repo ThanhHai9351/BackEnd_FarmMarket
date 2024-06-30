@@ -12,7 +12,6 @@ const createProductService = (data) => {
       image,
       quantity,
       nearType,
-      createdAt,
       nsxid,
     } = data;
     try {
@@ -38,7 +37,6 @@ const createProductService = (data) => {
         image,
         quantity,
         nearType,
-        createdAt,
         nsxid,
       });
 
@@ -68,12 +66,11 @@ const getAllProductsService = (
       let query = {};
       if (filter) {
         query.name = { $regex: filter, $options: "i" };
+      } else if (nsxid) {
+        query.nsxid = nsxid;
       }
       if (categoryid) {
         query.categoryid = categoryid;
-      }
-      if (nsxid) {
-        query.nsxid = nsxid;
       }
 
       const totalProduct = await Product.countDocuments(query);
@@ -149,10 +146,31 @@ const deleteProductService = (id) => {
   });
 };
 
+const getAllAllProductsService = (nsxid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let query = {};
+      if (nsxid) {
+        query.nsxid = nsxid;
+      }
+
+      const allProduct = await Product.find(query);
+
+      resolve({
+        status: "OK",
+        message: "GET ALL PRODUCT COMPLETE!",
+        data: allProduct,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
   createProductService,
   getAllProductsService,
   getDetailProductService,
   updateProductService,
   deleteProductService,
+  getAllAllProductsService,
 };

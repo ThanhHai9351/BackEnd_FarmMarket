@@ -27,14 +27,24 @@ const createCategoryService = (data) => {
   });
 };
 
-const getAllCategoryService = () => {
+const getAllCategoryService = (limit, page, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const allCate = await Category.find();
+      let query = {};
+      if (filter) {
+        query.name = { $regex: filter, $options: "i" };
+      }
+      const totalCategory = await Category.countDocuments(query);
+      const allCategory = await Category.find(query)
+        .limit(limit)
+        .skip(limit * page);
       resolve({
         status: "OK",
-        message: "GET ALL CATEGORY COMPLETE!",
-        data: allCate,
+        message: "GET ALL Category COMPLETE!",
+        data: allCategory,
+        total: totalCategory,
+        pageCurrent: Number(page + 1),
+        totalPage: Math.ceil(totalCategory / limit),
       });
     } catch (e) {
       reject(e);

@@ -108,14 +108,24 @@ const deleteUserService = (id) => {
   });
 };
 
-const getAllUserService = () => {
+const getAllUserService = (limit, page, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const allUser = await User.find();
+      let query = {};
+      if (filter) {
+        query.name = { $regex: filter, $options: "i" };
+      }
+      const totalUser = await User.countDocuments(query);
+      const allUser = await User.find(query)
+        .limit(limit)
+        .skip(limit * page);
       resolve({
         status: "OK",
-        message: "GET ALL USER COMPLETE!",
+        message: "GET ALL User COMPLETE!",
         data: allUser,
+        total: totalUser,
+        pageCurrent: Number(page + 1),
+        totalPage: Math.ceil(totalUser / limit),
       });
     } catch (e) {
       reject(e);

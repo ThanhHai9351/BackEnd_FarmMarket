@@ -93,10 +93,20 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const getAllAllProducts = async (req, res) => {
+  try {
+    const { nsxid } = req.query;
+    const respon = await ProductService.getAllAllProductsService(nsxid);
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
 module.exports = {
   createProduct,
   getAllProducts,
   getDetailProduct,
   updateProduct,
   deleteProduct,
+  getAllAllProducts,
 };

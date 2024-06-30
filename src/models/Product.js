@@ -12,7 +12,6 @@ const productSchema = new mongoose.Schema(
     image: { type: String, required: true },
     quantity: { type: Number, required: true },
     nearType: { type: String, required: false },
-    createdAt: { type: Date, required: false },
     nsxid: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

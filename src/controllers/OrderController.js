@@ -62,7 +62,12 @@ const deleteOrder = async (req, res) => {
 
 const getAllOrder = async (req, res) => {
   try {
-    const respon = await OrderService.getAllOrderSevice();
+    const { limit, page, filter } = req.query;
+    const respon = await OrderService.getAllOrderSevice(
+      Number(limit) || 10,
+      Number(page) || 0,
+      filter || ""
+    );
     return res.status(200).json(respon);
   } catch (e) {
     return res.status(404).json({ message: e.message });
