@@ -81,8 +81,12 @@ const deleteOrderService = (id) => {
 const getAllOrderSevice = (limit, page, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const totalOrder = await Order.countDocuments({});
-      const allOrder = await Order.find({})
+      let data;
+      if (filter) {
+        data = { _id: filter };
+      }
+      const totalOrder = await Order.countDocuments(data);
+      const allOrder = await Order.find(data)
         .limit(limit)
         .skip(limit * page);
 

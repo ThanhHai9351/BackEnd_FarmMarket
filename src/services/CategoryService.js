@@ -67,8 +67,43 @@ const getDetailCategory = (id) => {
   });
 };
 
+const deleteCategoryService = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await Category.findByIdAndDelete(id);
+
+      resolve({
+        status: "OK",
+        message: "DELETE CATEGORY SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const updateCategoryService = (id, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const updateCategory = await Category.findByIdAndUpdate(id, data, {
+        new: true,
+      });
+
+      resolve({
+        status: "OK",
+        message: "Success",
+        data: updateCategory,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createCategoryService,
   getAllCategoryService,
   getDetailCategory,
+  deleteCategoryService,
+  updateCategoryService,
 };

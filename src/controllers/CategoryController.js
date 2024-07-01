@@ -51,4 +51,43 @@ const getCategory = async (req, res) => {
   }
 };
 
-module.exports = { createCategory, getAllCategory, getCategory };
+const deleteCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    if (!categoryId) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "The category is required" });
+    }
+    const respon = await CategoryServive.deleteCategoryService(categoryId);
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
+
+const updateCategory = async (req, res) => {
+  try {
+    const categoryID = req.params.id;
+    const data = req.body;
+    if (!categoryID) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "The product is required" });
+    }
+    const respon = await CategoryServive.updateCategoryService(
+      categoryID,
+      data
+    );
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
+module.exports = {
+  createCategory,
+  getAllCategory,
+  getCategory,
+  deleteCategory,
+  updateCategory,
+};
