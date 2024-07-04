@@ -142,10 +142,29 @@ const getDetailOrderService = (id) => {
   });
 };
 
+const updateOrderService = (id, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const updateOrder = await Order.findByIdAndUpdate(id, data, {
+        new: true,
+      });
+
+      resolve({
+        status: "OK",
+        message: "Success",
+        data: updateOrder,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createOrderService,
   deleteOrderService,
   getAllOrderSevice,
   getAllOrderFromUserService,
   getDetailOrderService,
+  updateOrderService,
 };

@@ -104,10 +104,27 @@ const getdetailOrder = async (req, res) => {
   }
 };
 
+const updateOrder = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const data = req.body;
+    if (!orderId) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "The product is required" });
+    }
+    const respon = await OrderService.updateOrderService(orderId, data);
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
+
 module.exports = {
   createOrder,
   deleteOrder,
   getAllOrder,
   getAllOrderFromUser,
   getdetailOrder,
+  updateOrder,
 };
