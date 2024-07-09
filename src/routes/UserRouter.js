@@ -8,7 +8,7 @@ const {
 
 router.post("/register", userController.createUser);
 router.post("/login", userController.loginUser);
-
+router.post("/loginGoogle", userController.loginGoogle);
 router.put("/update/:id", userController.updateUser);
 router.delete("/delete/:id", userController.deleteUser);
 router.get("/getAll", userController.getAllUsers);

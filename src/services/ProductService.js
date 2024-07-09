@@ -166,6 +166,32 @@ const getAllAllProductsService = (nsxid) => {
     }
   });
 };
+
+const updateQuantityProductService = (id, quantity) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkProduct = await Product.findOne({ _id: id });
+
+      const updateProduct = await Product.findByIdAndUpdate(
+        id,
+        {
+          quantity: checkProduct.quantity - quantity,
+        },
+        {
+          new: true,
+        }
+      );
+
+      resolve({
+        status: "OK",
+        message: "Success",
+        data: updateProduct,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
   createProductService,
   getAllProductsService,
@@ -173,4 +199,5 @@ module.exports = {
   updateProductService,
   deleteProductService,
   getAllAllProductsService,
+  updateQuantityProductService,
 };

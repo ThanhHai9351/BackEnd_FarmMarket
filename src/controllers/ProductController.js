@@ -102,6 +102,25 @@ const getAllAllProducts = async (req, res) => {
     return res.status(404).json({ message: e.message });
   }
 };
+
+const updateQuantityProduct = async (req, res) => {
+  try {
+    const productID = req.params.id;
+    const { quantity } = req.body;
+    if (!productID) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "The product is required" });
+    }
+    const respon = await ProductService.updateQuantityProductService(
+      productID,
+      quantity
+    );
+    return res.status(200).json(respon);
+  } catch (e) {
+    return res.status(404).json({ message: e.message });
+  }
+};
 module.exports = {
   createProduct,
   getAllProducts,
@@ -109,4 +128,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getAllAllProducts,
+  updateQuantityProduct,
 };

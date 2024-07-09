@@ -164,6 +164,37 @@ const getCurrentUserService = (token) => {
   });
 };
 
+const loginGoogleService = (email) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkUser = await User.findOne({ email: email });
+      if (checkUser === null) {
+        resolve({
+          status: "OK",
+          message: "The user is not defined",
+        });
+      }
+      const access_token = await genneralAccessToken({
+        id: checkUser.id,
+        role: checkUser.role,
+      });
+
+      const refresh_token = await genneralRefreshToken({
+        id: checkUser.id,
+        role: checkUser.role,
+      });
+      resolve({
+        status: "OK",
+        message: "Success login user",
+        access_token,
+        refresh_token,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createUserService,
   loginUserService,
@@ -172,4 +203,5 @@ module.exports = {
   getAllUserService,
   getDetailUser,
   getCurrentUserService,
+  loginGoogleService,
 };
