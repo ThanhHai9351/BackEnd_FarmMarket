@@ -7,6 +7,7 @@ const CategoryRouter = require("./CategoryRouter");
 const PaymentRouter = require("./PaymentRouter");
 const MailerRouter = require("./MailerRouter");
 const ImageRouter = require("./ImageRouter");
+const MoMoRouter = require("./MoMoRouter");
 
 const routes = (app) => {
   app.use("/api/user", UserRouter);
@@ -17,6 +18,7 @@ const routes = (app) => {
   app.use("/api/category", CategoryRouter);
   app.use("/api/mailer", MailerRouter);
   app.use("/api/image", ImageRouter);
+  app.use("/api/momo", MoMoRouter);
   app.use(
     "/api/payment",
     (req, res, next) => {

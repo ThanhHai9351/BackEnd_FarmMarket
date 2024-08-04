@@ -12,6 +12,7 @@ const sendMailService = async (email, title, message) => {
       pass: process.env.PASSWORD,
     },
   });
+
   const info = await transporter.sendMail({
     from: `"FarmMarket 👻" <${process.env.EMAIL}>`,
     to: email,
