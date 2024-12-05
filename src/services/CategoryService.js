@@ -40,7 +40,7 @@ const getAllCategoryService = (limit, page, filter) => {
         .skip(limit * page);
       resolve({
         status: "OK",
-        message: "GET ALL Category COMPLETE!",
+        message: "Get all categories complete!",
         data: allCategory,
         total: totalCategory,
         pageCurrent: Number(page + 1),
